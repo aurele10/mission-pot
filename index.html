@@ -10,6 +10,47 @@
 
   <link rel="manifest" href="./manifest.json">
 
+#rocketCelebration {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.celebration-rocket {
+  position: absolute;
+  bottom: -80px;
+  font-size: 34px;
+  opacity: 0;
+  filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.2));
+  animation: rocketTakeoff var(--duration) ease-in forwards;
+  animation-delay: var(--delay);
+}
+
+@keyframes rocketTakeoff {
+  0% {
+    transform: translateY(0) rotate(var(--rotation)) scale(0.7);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    transform:
+      translateY(-120vh)
+      translateX(var(--drift))
+      rotate(var(--rotation))
+      scale(1.15);
+    opacity: 0;
+  }
+}
   <style>
     :root {
       color-scheme: light;
@@ -35,6 +76,7 @@
     }
 
     body {
+      <div id="rocketCelebration" aria-hidden="true"></div>
       min-height: 100vh;
       margin: 0;
       padding:
@@ -635,6 +677,7 @@
           planetElement.classList.remove("is-celebrating");
           void planetElement.offsetWidth;
           planetElement.classList.add("is-celebrating");
+          launchRocketCelebration();
         }
       }
 
@@ -651,7 +694,60 @@
         saveWeek();
         render();
       }
+const PLANET_LEVEL_KEY = "mission-pot-aurele-planet-level";
 
+function getPlanetLevel(stars) {
+  if (stars >= 30) return 3;
+  if (stars >= 15) return 2;
+  if (stars >= 5) return 1;
+  return 0;
+}
+
+function launchRocketCelebration() {
+  const container = document.getElementById("rocketCelebration");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  for (let i = 0; i < 18; i++) {
+    const rocket = document.createElement("span");
+
+    rocket.className = "celebration-rocket";
+    rocket.textContent = "🚀";
+
+    rocket.style.left = Math.random() * 94 + "%";
+    rocket.style.fontSize = 24 + Math.random() * 26 + "px";
+    rocket.style.setProperty("--duration", 1.8 + Math.random() * 1.5 + "s");
+    rocket.style.setProperty("--delay", Math.random() * 0.8 + "s");
+    rocket.style.setProperty("--drift", -80 + Math.random() * 160 + "px");
+    rocket.style.setProperty("--rotation", -18 + Math.random() * 36 + "deg");
+
+    container.appendChild(rocket);
+  }
+
+  window.setTimeout(() => {
+    container.innerHTML = "";
+  }, 4500);
+}
+
+function checkPlanetChange(stars) {
+  const newLevel = getPlanetLevel(stars);
+  const savedLevelRaw = localStorage.getItem(PLANET_LEVEL_KEY);
+
+  if (savedLevelRaw === null) {
+    localStorage.setItem(PLANET_LEVEL_KEY, String(newLevel));
+    return;
+  }
+
+  const savedLevel = Number(savedLevelRaw);
+
+  if (newLevel > savedLevel) {
+    launchRocketCelebration();
+  }
+
+  localStorage.setItem(PLANET_LEVEL_KEY, String(newLevel));
+}
       resetButton.addEventListener("click", resetWeek);
       render();
 
