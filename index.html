@@ -3,65 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<link rel="manifest" href="manifest.json">
-  title>Mission Pot de Départ 🚀</title>
+
+<link rel="manifest" href="manifest.json">
+
+<title>Mission Pot d'Aurèle 🚀</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(#b9ddff, #ffffff);
-  color: #17345f;
-  text-align: center;
-  min-height: 100vh;
+:root{
+  --blue:#1769c2;
+  --sky:#dff1ff;
+  --dark:#12345b;
+  --star:#ffd84d;
+  --green:#55c58a;
+  --white:#ffffff;
 }
 
-.container {
-  max-width: 500px;
-  margin: auto;
-  padding: 25px;
+*{
+  box-sizing:border-box;
 }
 
-h1 {
-  font-size: 34px;
-  color: #1769c2;
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial, sans-serif;
+  background:linear-gradient(#bfe3ff,#ffffff);
+  color:var(--dark);
 }
 
-.rocket {
-  font-size: 70px;
-  animation: float 2s infinite;
+.container{
+  max-width:520px;
+  margin:auto;
+  padding:20px;
+  text-align:center;
 }
 
-@keyframes float {
-  50% { transform: translateY(-12px); }
+.rocket{
+  font-size:70px;
+  animation:float 2s infinite ease-in-out;
 }
 
-.card {
-  background: white;
-  border-radius: 25px;
-  padding: 20px;
-  margin: 20px 0;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+@keyframes float{
+  50%{transform:translateY(-12px);}
 }
 
-button {
-  border: none;
-  background: #1769c2;
-  color: white;
-  padding: 15px 25px;
-  border-radius: 20px;
-  font-size: 18px;
-  margin: 8px;
+h1{
+  color:var(--blue);
+  font-size:32px;
+  margin:5px;
 }
 
-.star {
-  font-size: 50px;
+.subtitle{
+  font-size:18px;
 }
 
-#progress {
-  font-size: 22px;
-  margin: 15px;
+.card{
+  background:white;
+  border-radius:25px;
+  padding:20px;
+  margin:18px 0;
+  box-shadow:0 8px 25px rgba(0,0,0,.12);
 }
+
+input{
+  border:2px solid #b8d8f8;
+  border-radius:15px;
+  padding:10px;
+  font-size:18px;
+  text-align:center;
+  width:180px;
+}
+
+.progress{
+  height:25px;
+  background:#dcecff;
+  border-radius:20px;
+  overflow:hidden;
+  margin:15px;
+}
+
+.progress div{
+  height:100%;
+  background:linear-gradient(90deg,#55c58a,#ffd84d);
+  width:0%;
+  transition:.5s;
+}
+
+.planet{
+  font-size:45px;
+}
+
+.days{
+  display:grid;
+  gap:12px;
+}
+
+.day{
+  background:white;
+  border-radius:20px;
+  padding:15px;
+  text-align:left;
+}
+
+.day h3{
+  color:var(--blue);
+  margin:0 0 10px;
+}
+
+.row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:8px 0;
+}
+
+.dot{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  border:2px dashed #b8d8f8;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  cursor:pointer;
+}
+
+.dot.active{
+  border:2px solid var(--green);
+  background:#e5fff2;
+}
+
+.star{
+  font-size:45px;
+  cursor:pointer;
+  filter:grayscale(1);
+}
+
+.star.active{
+  filter:none;
+}
+
+button{
+  background:var(--blue);
+  color:white;
+  border:0;
+  padding:14px 20px;
+  border-radius:20px;
+  font-size:17px;
+  margin:8px;
+}
+
+.message{
+  color:var(--green);
+  font-weight:bold;
+}
+
 </style>
 </head>
 
@@ -73,65 +169,208 @@ button {
 
 <h1>Mission Pot de Départ</h1>
 
-<p>
-Astronaute : <input id="name" placeholder="Prénom">
+<p class="subtitle">
+Bienvenue <strong>Aurèle</strong>, petit astronaute ⭐
 </p>
 
 <div class="card">
 
 <h2>🌟 Progression</h2>
 
-<div id="progress">
+<div class="planet" id="planet">
+🌍
+</div>
+
+<div class="progress">
+<div id="bar"></div>
+</div>
+
+<p id="count">
 0 étoiles
-</div>
-
-<div class="star" id="star">
-☆
-</div>
-
-<button onclick="addStar()">
-⭐ J'ai réussi !
-</button>
+</p>
 
 </div>
-
 <div class="card">
-<h2>🌙 Destination</h2>
-<div id="planet">
-🌍 Terre
+
+<h2>📅 Semaine d'Aurèle</h2>
+
+<div class="days" id="days"></div>
+
 </div>
-</div>
+
+<p class="message" id="message"></p>
 
 </div>
 
 
 <script>
 
-let stars = Number(localStorage.getItem("stars")) || 0;
+const jours = [
+"Lundi",
+"Mardi",
+"Mercredi",
+"Jeudi",
+"Vendredi",
+"Samedi",
+"Dimanche"
+];
 
-function update(){
- document.getElementById("progress").innerHTML =
- stars + " étoile" + (stars>1 ? "s" : "");
 
- if(stars >= 10){
-   document.getElementById("planet").innerHTML="🪐 Saturne";
- }
- else if(stars >=5){
-   document.getElementById("planet").innerHTML="🔴 Mars";
- }
- else if(stars >=2){
-   document.getElementById("planet").innerHTML="🌙 Lune";
- }
+let data = JSON.parse(localStorage.getItem("missionPotAurele")) || {
+  stars:0,
+  days: jours.map(j => ({
+    pipi:[false,false,false,false,false],
+    caca:[false,false,false,false,false],
+    star:false
+  }))
+};
+
+
+function save(){
+  localStorage.setItem(
+    "missionPotAurele",
+    JSON.stringify(data)
+  );
 }
 
-function addStar(){
- stars++;
- localStorage.setItem("stars", stars);
- document.getElementById("star").innerHTML="⭐";
- update();
+
+function toggle(type,day,index){
+
+ data.days[day][type][index] =
+ !data.days[day][type][index];
+
+ save();
+ render();
+
 }
 
-update();
+
+function toggleStar(day){
+
+ data.days[day].star =
+ !data.days[day].star;
+
+ save();
+
+ if(data.days[day].star){
+   data.stars++;
+   document.getElementById("message").innerHTML =
+   "🚀 Bravo Aurèle ! Décollage réussi !";
+ }
+
+ render();
+
+}
+
+
+function render(){
+
+ let container =
+ document.getElementById("days");
+
+ container.innerHTML="";
+
+
+ jours.forEach((jour,i)=>{
+
+ let d=data.days[i];
+
+
+ let html=`
+ <div class="day">
+
+ <h3>${jour}
+ <span onclick="toggleStar(${i})" class="star ${d.star?'active':''}">
+ ⭐
+ </span>
+ </h3>
+
+
+ <div class="row">
+ 💧 Pipi
+ `;
+
+
+ d.pipi.forEach((v,n)=>{
+ html+=`
+ <div onclick="toggle('pipi',${i},${n})"
+ class="dot ${v?'active':''}">
+ ${v?'💧':''}
+ </div>`;
+ });
+
+
+ html+=`
+ </div>
+
+
+ <div class="row">
+ 💩 Caca
+ `;
+
+
+ d.caca.forEach((v,n)=>{
+ html+=`
+ <div onclick="toggle('caca',${i},${n})"
+ class="dot ${v?'active':''}">
+ ${v?'💩':''}
+ </div>`;
+ });
+
+
+ html+=`
+ </div>
+
+ </div>
+ `;
+
+
+ container.innerHTML+=html;
+
+ });
+
+
+ updateProgress();
+
+}
+
+
+function updateProgress(){
+
+ document.getElementById("count").innerHTML =
+ data.stars+
+ " étoile"+
+ (data.stars>1?"s":"");
+
+
+ let percent =
+ Math.min(data.stars*10,100);
+
+
+ document.getElementById("bar").style.width =
+ percent+"%";
+
+
+ let planet="🌍";
+
+ if(data.stars>=5)
+ planet="🌙";
+
+ if(data.stars>=10)
+ planet="🔴";
+
+ if(data.stars>=20)
+ planet="🪐";
+
+
+ document.getElementById("planet").innerHTML =
+ planet;
+
+}
+
+
+render();
+
 
 </script>
 
