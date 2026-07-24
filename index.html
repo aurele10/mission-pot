@@ -751,7 +751,7 @@ function checkPlanetChange(stars) {
 }
       resetButton.addEventListener("click", resetWeek);
       render();
-
+launchRocketCelebration();
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker
