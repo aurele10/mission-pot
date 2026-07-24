@@ -1,17 +1,10 @@
 {
   "name": "Mission Pot d’Aurèle",
   "short_name": "Mission Pot",
-  "description": "Un suivi ludique et motivant de la semaine d’Aurèle.",
-  "lang": "fr-FR",
   "start_url": "./",
-  "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
   "background_color": "#dff1ff",
-  "theme_color": "#1769c2",
-  "categories": [
-    "education",
-    "kids",
-    "lifestyle"
-  ]
+  "theme_color": "#1676d2",
+  "lang": "fr",
+  "description": "Le tableau spatial de propreté d’Aurèle."
 }
