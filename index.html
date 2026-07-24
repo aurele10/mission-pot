@@ -657,9 +657,10 @@
       }
 
       function render() {
-        renderDays();
-        updateScore();
-      }
+    renderDays();
+    updateScore();
+    checkPlanetChange(getTotalScore());
+}
 
       function changeCount(dayIndex, type, amount) {
         week[dayIndex][type] = Math.max(0, week[dayIndex][type] + amount);
@@ -678,7 +679,6 @@
           planetElement.classList.remove("is-celebrating");
           void planetElement.offsetWidth;
           planetElement.classList.add("is-celebrating");
-          launchRocketCelebration();
         }
       }
 
