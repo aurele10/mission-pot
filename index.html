@@ -3,764 +3,634 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#1769c2">
-  <meta name="description" content="Mission Pot d’Aurèle : un suivi ludique et motivant de la semaine.">
-
+  <meta name="theme-color" content="#1676d2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Mission Pot">
+  <link rel="manifest" href="manifest.json">
   <title>Mission Pot d’Aurèle 🚀</title>
 
-  <link rel="manifest" href="./manifest.json">
-
-<style>
-#rocketCelebration {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.celebration-rocket {
-  position: absolute;
-  bottom: -80px;
-  font-size: 34px;
-  opacity: 0;
-  filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.2));
-  animation: rocketTakeoff var(--duration) ease-in forwards;
-  animation-delay: var(--delay);
-}
-
-@keyframes rocketTakeoff {
-  0% {
-    transform: translateY(0) rotate(var(--rotation)) scale(0.7);
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  70% {
-    opacity: 1;
-  }
-
-  100% {
-    transform:
-      translateY(-120vh)
-      translateX(var(--drift))
-      rotate(var(--rotation))
-      scale(1.15);
-    opacity: 0;
-  }
-}
   <style>
-    :root {
-      color-scheme: light;
-      --blue: #1769c2;
-      --blue-dark: #0d4f99;
-      --sky: #dff1ff;
-      --white: #ffffff;
-      --text: #183046;
-      --muted: #64798b;
-      --success: #17875b;
-      --danger: #c73a4a;
-      --shadow: 0 10px 30px rgba(25, 76, 117, 0.14);
-      --radius: 22px;
+    :root{
+      --blue:#1676d2;
+      --blue-dark:#123b67;
+      --blue-soft:#dff1ff;
+      --sky:#eef8ff;
+      --white:#fff;
+      --yellow:#ffd84d;
+      --green:#50c894;
+      --red:#e95c62;
+      --shadow:0 10px 28px rgba(18,59,103,.14);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      min-height: 100%;
-      background: var(--sky);
-    }
-
-    body {
-      <div id="rocketCelebration" aria-hidden="true"></div>
-      min-height: 100vh;
-      margin: 0;
-      padding:
-        max(20px, env(safe-area-inset-top))
-        max(16px, env(safe-area-inset-right))
-        max(28px, env(safe-area-inset-bottom))
-        max(16px, env(safe-area-inset-left));
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html{background:#dff1ff}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      color:var(--blue-dark);
       background:
-        radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 38%),
-        linear-gradient(180deg, #dff1ff 0%, #eef8ff 100%);
-      color: var(--text);
-      font-family: Inter, ui-rounded, "SF Pro Rounded", system-ui, -apple-system,
-        BlinkMacSystemFont, "Segoe UI", sans-serif;
+        radial-gradient(circle at 16% 8%,rgba(255,255,255,.95) 0 2px,transparent 3px) 0 0/65px 65px,
+        linear-gradient(180deg,#cce9ff 0%,var(--sky) 55%,#fff 100%);
+      padding:18px 14px calc(44px + env(safe-area-inset-bottom));
     }
 
-    button,
-    input {
-      font: inherit;
+    button,input{font:inherit}
+    button{touch-action:manipulation}
+    .app{width:100%;max-width:650px;margin:0 auto}
+
+    header{text-align:center;margin:4px 0 18px}
+    .hero-rocket{
+      display:inline-block;
+      font-size:72px;
+      animation:heroFloat 2.5s ease-in-out infinite;
+      filter:drop-shadow(0 8px 8px rgba(0,0,0,.18));
+    }
+    @keyframes heroFloat{
+      0%,100%{transform:translateY(0) rotate(-5deg)}
+      50%{transform:translateY(-10px) rotate(5deg)}
     }
 
-    button {
-      touch-action: manipulation;
+    h1{margin:2px 0 4px;color:var(--blue);font-size:clamp(29px,8vw,40px)}
+    .subtitle{margin:0;color:#627c97;font-size:17px;line-height:1.4}
+
+    .card{
+      background:rgba(255,255,255,.96);
+      border-radius:24px;
+      padding:18px;
+      margin:14px 0;
+      box-shadow:var(--shadow);
     }
 
-    .app {
-      width: min(100%, 760px);
-      margin: 0 auto;
+    .space-card{
+      position:relative;
+      overflow:hidden;
+      color:#fff;
+      background:linear-gradient(180deg,#163d70,#092546);
+      text-align:center;
+      min-height:260px;
+    }
+    .space-card::before{
+      content:"✦  ·  ✧  ·  ✦  ·  ✧  ·  ✦";
+      position:absolute;
+      inset:14px 0 auto;
+      color:rgba(255,255,255,.58);
+      letter-spacing:10px;
+      font-size:13px;
+    }
+    .space-inner{position:relative;z-index:1;padding-top:12px}
+    .planet{font-size:72px;margin:5px 0;transition:transform .35s ease}
+    .planet.pop{animation:planetPop .75s ease}
+    @keyframes planetPop{
+      0%{transform:scale(.65)}
+      55%{transform:scale(1.28) rotate(8deg)}
+      100%{transform:scale(1)}
     }
 
-    .hero {
-      padding: 10px 4px 18px;
-      text-align: center;
+    .score{font-size:30px;font-weight:900;color:var(--yellow);margin:6px 0}
+    .progress-track{
+      height:20px;border-radius:999px;overflow:hidden;
+      background:rgba(255,255,255,.17);margin:15px 0 10px;
     }
-
-    .hero__eyebrow {
-      margin: 0 0 5px;
-      color: var(--blue);
-      font-size: 0.78rem;
-      font-weight: 850;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
+    .progress-fill{
+      width:0;height:100%;border-radius:999px;
+      background:linear-gradient(90deg,var(--green),var(--yellow));
+      transition:width .45s ease;
     }
+    .destination{margin:10px 0 0;color:#d9ebff;font-weight:800;line-height:1.35}
+    .next{margin:5px 0 0;color:#a9cdec;font-size:13px}
 
-    h1 {
-      margin: 0;
-      font-size: clamp(2rem, 8vw, 3.45rem);
-      line-height: 1;
-      letter-spacing: -0.045em;
+    .section-title{text-align:center;color:var(--blue);margin:0 0 14px;font-size:22px}
+    .day{
+      border:2px solid #e1eef9;
+      background:#fbfdff;
+      border-radius:20px;
+      padding:15px;
+      margin:12px 0;
+      transition:border-color .25s,background .25s;
     }
+    .day.complete{border-color:var(--yellow);background:#fffdf0}
+    .day-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .day-name{font-size:21px;font-weight:900;color:var(--blue)}
 
-    .hero__text {
-      max-width: 520px;
-      margin: 12px auto 0;
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.5;
+    .evening-star{
+      border:0;background:transparent;font-size:44px;padding:0 2px;
+      filter:grayscale(1);opacity:.35;transform:scale(.95);
+      transition:.2s;
     }
+    .evening-star.on{filter:none;opacity:1;transform:scale(1.08)}
 
-    .card {
-      border: 1px solid rgba(23, 105, 194, 0.1);
-      border-radius: var(--radius);
-      background: rgba(255, 255, 255, 0.92);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
+    .counter{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      align-items:center;
+      border-top:1px solid #e8f0f8;
+      padding:11px 0;
     }
-
-    .score-card {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 20px;
-      align-items: center;
-      margin-bottom: 18px;
-      padding: 22px;
-      overflow: hidden;
+    .counter:first-of-type{border-top:0}
+    .counter-label{font-size:19px;font-weight:800}
+    .count-badge{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:36px;height:36px;border-radius:50%;
+      color:#fff;background:var(--blue);margin-left:5px;font-size:17px;
     }
-
-    .score-card__label {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+    .counter-actions{display:flex;gap:7px}
+    .minus,.plus{
+      border:0;border-radius:14px;min-width:49px;height:45px;
+      font-size:21px;font-weight:900;
     }
+    .minus{background:#e7f2fc;color:var(--blue-dark)}
+    .plus{background:var(--blue);color:#fff}
 
-    .score {
-      margin: 3px 0 13px;
-      font-size: clamp(2.15rem, 10vw, 4.5rem);
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -0.05em;
+    .evening-note{text-align:center;color:#7c91a7;font-size:13px;margin:7px 0 0}
+    .complete .evening-note{color:#987113;font-weight:800}
+
+    .parent-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}
+    .action{
+      border:0;border-radius:14px;padding:12px 15px;font-weight:800;
+      background:var(--blue);color:#fff;
     }
+    .action.secondary{background:#e7f2fc;color:var(--blue-dark)}
+    .action.danger{background:#ffe8e8;color:#a4363a}
 
-    .progress {
-      height: 15px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: #e5eef5;
+    .saved{min-height:20px;text-align:center;margin:10px 0 0;color:var(--green);font-weight:800}
+    .tip{background:#fff7d9;color:#685620;font-size:14px;line-height:1.5}
+
+    #celebrationLayer{
+      position:fixed;
+      inset:0;
+      overflow:hidden;
+      pointer-events:none;
+      z-index:99999;
     }
-
-    .progress__bar {
-      width: 0%;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, #1769c2, #54b8ff);
-      transition: width 300ms ease;
+    .flying-rocket{
+      position:absolute;
+      bottom:-90px;
+      line-height:1;
+      filter:drop-shadow(0 6px 5px rgba(0,0,0,.25));
+      animation:rocketUp var(--duration) cubic-bezier(.16,.72,.2,1) forwards;
+      animation-delay:var(--delay);
+      opacity:0;
     }
-
-    .score-card__caption {
-      margin: 9px 0 0;
-      color: var(--muted);
-      font-size: 0.86rem;
-    }
-
-    .planet {
-      display: grid;
-      width: clamp(82px, 20vw, 120px);
-      aspect-ratio: 1;
-      place-items: center;
-      border-radius: 50%;
-      background: linear-gradient(145deg, #f1f9ff, #cfeaff);
-      box-shadow:
-        inset -12px -12px 24px rgba(23, 105, 194, 0.1),
-        0 12px 28px rgba(23, 105, 194, 0.16);
-      font-size: clamp(3.25rem, 13vw, 5.7rem);
-      transition: transform 220ms ease;
-    }
-
-    .planet.is-celebrating {
-      animation: bounce 600ms ease;
-    }
-
-    .toolbar {
-      display: flex;
-      justify-content: flex-end;
-      margin: 0 2px 12px;
-    }
-
-    .reset-button {
-      border: 0;
-      border-radius: 999px;
-      padding: 9px 14px;
-      background: rgba(255, 255, 255, 0.74);
-      color: var(--muted);
-      font-size: 0.86rem;
-      font-weight: 750;
-      cursor: pointer;
-    }
-
-    .reset-button:hover,
-    .reset-button:focus-visible {
-      color: var(--danger);
-      outline: 3px solid rgba(199, 58, 74, 0.14);
-    }
-
-    .days {
-      display: grid;
-      gap: 14px;
-    }
-
-    .day-card {
-      padding: 18px;
-    }
-
-    .day-card__header {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 15px;
-    }
-
-    .day-card h2 {
-      margin: 0;
-      font-size: 1.22rem;
-    }
-
-    .star-button {
-      display: grid;
-      width: 46px;
-      height: 46px;
-      flex: 0 0 auto;
-      place-items: center;
-      border: 0;
-      border-radius: 50%;
-      background: #eef4f8;
-      font-size: 1.6rem;
-      cursor: pointer;
-      transition: transform 150ms ease, background 150ms ease;
-    }
-
-    .star-button:hover {
-      transform: scale(1.07);
-    }
-
-    .star-button[aria-pressed="true"] {
-      background: #fff4c2;
-    }
-
-    .counter-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .counter {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 10px;
-      align-items: center;
-      min-width: 0;
-      border-radius: 16px;
-      padding: 10px;
-      background: #f2f8fc;
-    }
-
-    .counter__icon {
-      font-size: 1.45rem;
-    }
-
-    .counter__text {
-      min-width: 0;
-    }
-
-    .counter__label {
-      display: block;
-      overflow: hidden;
-      color: var(--muted);
-      font-size: 0.76rem;
-      font-weight: 750;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .counter__value {
-      display: block;
-      font-size: 1.4rem;
-      font-weight: 900;
-      line-height: 1.1;
-    }
-
-    .counter__actions {
-      display: flex;
-      gap: 6px;
-    }
-
-    .counter-button {
-      display: grid;
-      width: 36px;
-      height: 36px;
-      place-items: center;
-      border: 0;
-      border-radius: 12px;
-      background: var(--blue);
-      color: var(--white);
-      font-size: 1.2rem;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    .counter-button:hover,
-    .counter-button:focus-visible {
-      background: var(--blue-dark);
-      outline: 3px solid rgba(23, 105, 194, 0.2);
-    }
-
-    .counter-button--minus {
-      background: #dce9f2;
-      color: var(--text);
-    }
-
-    .counter-button--minus:hover,
-    .counter-button--minus:focus-visible {
-      background: #cadde9;
-    }
-
-    .footer {
-      padding: 22px 8px 4px;
-      color: var(--muted);
-      text-align: center;
-      font-size: 0.8rem;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0) rotate(0); }
-      35% { transform: translateY(-12px) rotate(-7deg); }
-      70% { transform: translateY(2px) rotate(7deg); }
-    }
-
-    @media (min-width: 640px) {
-      .days {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .day-card:last-child:nth-child(odd) {
-        grid-column: 1 / -1;
+    @keyframes rocketUp{
+      0%{transform:translate3d(0,0,0) rotate(var(--rotation)) scale(.65);opacity:0}
+      8%{opacity:1}
+      72%{opacity:1}
+      100%{
+        transform:translate3d(var(--drift),-125vh,0) rotate(var(--rotation)) scale(1.12);
+        opacity:0;
       }
     }
 
-    @media (max-width: 430px) {
-      .score-card {
-        gap: 10px;
-        padding: 18px;
-      }
-
-      .counter-grid {
-        grid-template-columns: 1fr;
-      }
+    .reward-toast{
+      position:fixed;
+      left:50%;
+      top:18%;
+      transform:translate(-50%,-20px) scale(.9);
+      z-index:100000;
+      pointer-events:none;
+      background:rgba(12,41,76,.95);
+      color:white;
+      border:2px solid rgba(255,216,77,.8);
+      border-radius:22px;
+      padding:15px 18px;
+      text-align:center;
+      box-shadow:0 14px 38px rgba(0,0,0,.28);
+      opacity:0;
+      max-width:86vw;
+      font-weight:900;
+    }
+    .reward-toast.show{animation:toastShow 2.7s ease forwards}
+    @keyframes toastShow{
+      0%{opacity:0;transform:translate(-50%,-20px) scale(.85)}
+      15%,75%{opacity:1;transform:translate(-50%,0) scale(1)}
+      100%{opacity:0;transform:translate(-50%,-12px) scale(.95)}
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        scroll-behavior: auto !important;
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
+    @media(max-width:390px){
+      .counter-label{font-size:17px}
+      .minus,.plus{min-width:44px}
     }
   </style>
 </head>
 
 <body>
+  <div id="celebrationLayer" aria-hidden="true"></div>
+  <div id="rewardToast" class="reward-toast" role="status" aria-live="polite"></div>
+
   <main class="app">
-    <header class="hero">
-      <p class="hero__eyebrow">Objectif de la semaine</p>
-      <h1>🚀 Mission Pot d’Aurèle</h1>
-      <p class="hero__text">
-        Chaque petit progrès fait grandir la planète. On avance un jour après l’autre !
-      </p>
+    <header>
+      <div class="hero-rocket">🚀</div>
+      <h1>Mission Pot d’Aurèle</h1>
+      <p class="subtitle">Chaque petit progrès fait décoller une fusée !</p>
     </header>
 
-    <section class="card score-card" aria-labelledby="score-title">
-      <div>
-        <p class="score-card__label" id="score-title">Étoiles gagnées</p>
-        <p class="score"><span id="score">0</span> ⭐</p>
-
-        <div
-          class="progress"
-          role="progressbar"
-          aria-label="Progression vers l’objectif"
-          aria-valuemin="0"
-          aria-valuemax="30"
-          aria-valuenow="0"
-        >
-          <div class="progress__bar" id="progress-bar"></div>
+    <section class="card space-card">
+      <div class="space-inner">
+        <div id="planet" class="planet">🌍</div>
+        <div id="score" class="score">0 ⭐</div>
+        <div class="progress-track">
+          <div id="progressFill" class="progress-fill"></div>
         </div>
-
-        <p class="score-card__caption" id="progress-caption">
-          Encore 30 étoiles pour atteindre la mission !
-        </p>
+        <p id="destination" class="destination">La fusée se prépare au décollage !</p>
+        <p id="nextMilestone" class="next"></p>
       </div>
-
-      <div class="planet" id="planet" aria-label="Planète de départ" role="img">🌑</div>
     </section>
 
-    <div class="toolbar">
-      <button class="reset-button" id="reset-button" type="button">
-        Recommencer la semaine
-      </button>
-    </div>
+    <section class="card">
+      <h2 class="section-title">📅 Missions de la semaine</h2>
+      <div id="days"></div>
+    </section>
 
-    <section class="days" id="days" aria-label="Suivi des jours de la semaine"></section>
+    <section class="card">
+      <h2 class="section-title">⚙️ Espace parent</h2>
+      <div class="parent-actions">
+        <button class="action secondary" id="exportButton">💾 Sauvegarder</button>
+        <button class="action secondary" id="importButton">📥 Restaurer</button>
+        <button class="action danger" id="resetButton">🔄 Nouvelle semaine</button>
+      </div>
+      <input id="importInput" type="file" accept="application/json" hidden>
+      <p id="savedMessage" class="saved"></p>
+    </section>
 
-    <footer class="footer">
-      Les progrès sont enregistrés automatiquement sur cet appareil.
-    </footer>
+    <section class="card tip">
+      💡 Chaque pipi ou caca donne <strong>1 étoile</strong> et fait décoller
+      plusieurs petites fusées. L’étoile du soir donne <strong>2 étoiles</strong>
+      et déclenche un plus grand lancement. Une nouvelle planète provoque une
+      grande fête de fusées.
+    </section>
   </main>
 
   <script>
     (() => {
       "use strict";
 
-      const STORAGE_KEY = "missionAurele";
-      const GOAL = 30;
-      const STAR_BONUS = 2;
+      const DAYS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+      const STORAGE_KEY = "mission-pot-aurele-v6";
 
-      const dayNames = [
-        "Lundi",
-        "Mardi",
-        "Mercredi",
-        "Jeudi",
-        "Vendredi",
-        "Samedi",
-        "Dimanche"
+      const MILESTONES = [
+        {score:0,  planet:"🌍", name:"Terre", message:"La fusée se prépare au décollage !"},
+        {score:5,  planet:"🌙", name:"Lune", message:"Bravo Aurèle, la Lune est atteinte !"},
+        {score:10, planet:"🛰️", name:"Station spatiale", message:"La station spatiale est atteinte !"},
+        {score:15, planet:"🔴", name:"Mars", message:"Cap sur Mars, petit astronaute !"},
+        {score:22, planet:"☄️", name:"Astéroïdes", message:"Aurèle traverse les astéroïdes !"},
+        {score:30, planet:"🪐", name:"Saturne", message:"Saturne est atteinte ! Super décollage !"},
+        {score:40, planet:"🌌", name:"Galaxie", message:"Aurèle explore la grande galaxie !"},
+        {score:50, planet:"⭐", name:"Étoile géante", message:"Une étoile géante est débloquée !"},
+        {score:65, planet:"👨‍🚀", name:"Astronaute confirmé", message:"Aurèle devient astronaute confirmé !"},
+        {score:80, planet:"🏆", name:"Mission accomplie", message:"Mission accomplie ! Bravo Aurèle !"}
       ];
 
-      const scoreElement = document.getElementById("score");
-      const progressElement = document.querySelector(".progress");
-      const progressBarElement = document.getElementById("progress-bar");
-      const progressCaptionElement = document.getElementById("progress-caption");
-      const planetElement = document.getElementById("planet");
-      const daysElement = document.getElementById("days");
-      const resetButton = document.getElementById("reset-button");
+      const el = {
+        days: document.getElementById("days"),
+        planet: document.getElementById("planet"),
+        score: document.getElementById("score"),
+        fill: document.getElementById("progressFill"),
+        destination: document.getElementById("destination"),
+        next: document.getElementById("nextMilestone"),
+        layer: document.getElementById("celebrationLayer"),
+        toast: document.getElementById("rewardToast"),
+        saved: document.getElementById("savedMessage"),
+        exportButton: document.getElementById("exportButton"),
+        importButton: document.getElementById("importButton"),
+        importInput: document.getElementById("importInput"),
+        resetButton: document.getElementById("resetButton")
+      };
 
-      function createEmptyWeek() {
-        return dayNames.map(() => ({
-          pipi: 0,
-          caca: 0,
-          star: false
-        }));
+      function emptyState(){
+        return {
+          version:6,
+          days:DAYS.map(() => ({pipi:0,caca:0,evening:false}))
+        };
       }
 
-      function normalizeWeek(value) {
-        if (!Array.isArray(value) || value.length !== dayNames.length) {
-          return createEmptyWeek();
+      function normalize(raw){
+        const base = emptyState();
+        if(!raw || !Array.isArray(raw.days)) return base;
+
+        base.days = DAYS.map((_,i) => {
+          const d = raw.days[i] || {};
+          return {
+            pipi: Math.max(0, Number(d.pipi ?? d.p ?? 0) || 0),
+            caca: Math.max(0, Number(d.caca ?? d.c ?? 0) || 0),
+            evening: Boolean(d.evening ?? d.reward ?? d.star ?? d.s ?? false)
+          };
+        });
+
+        return base;
+      }
+
+      function load(){
+        const keys = [
+          STORAGE_KEY,
+          "mission-pot-aurele-v4",
+          "missionPotAurele",
+          "missionAurele"
+        ];
+
+        for(const key of keys){
+          try{
+            const raw = localStorage.getItem(key);
+            if(raw) return normalize(JSON.parse(raw));
+          }catch(error){
+            console.warn("Ancienne sauvegarde illisible :", error);
+          }
         }
 
-        return value.map((day) => ({
-          pipi: Math.max(0, Number(day.pipi ?? day.p ?? 0) || 0),
-          caca: Math.max(0, Number(day.caca ?? day.c ?? 0) || 0),
-          star: Boolean(day.star ?? day.s)
-        }));
+        return emptyState();
       }
 
-      function loadWeek() {
-        try {
-          const savedValue = localStorage.getItem(STORAGE_KEY);
-          return savedValue
-            ? normalizeWeek(JSON.parse(savedValue))
-            : createEmptyWeek();
-        } catch (error) {
-          console.warn("Impossible de lire les progrès enregistrés.", error);
-          return createEmptyWeek();
-        }
-      }
+      let state = load();
 
-      let week = loadWeek();
-
-      function saveWeek() {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(week));
-        } catch (error) {
-          console.warn("Impossible d’enregistrer les progrès.", error);
-        }
-      }
-
-      function getTotalScore() {
-        return week.reduce(
-          (total, day) =>
-            total + day.pipi + day.caca + (day.star ? STAR_BONUS : 0),
+      function totalScore(){
+        return state.days.reduce(
+          (sum,d) => sum + d.pipi + d.caca + (d.evening ? 2 : 0),
           0
         );
       }
 
-      function getPlanet(score) {
-        if (score >= GOAL) {
-          return { emoji: "🪐", label: "Mission accomplie" };
-        }
+      function milestoneIndex(score){
+        let index = 0;
 
-        if (score >= 20) {
-          return { emoji: "🌍", label: "Une belle planète bleue" };
-        }
+        MILESTONES.forEach((milestone,i) => {
+          if(score >= milestone.score) index = i;
+        });
 
-        if (score >= 10) {
-          return { emoji: "🌕", label: "Une lune brillante" };
-        }
-
-        if (score >= 5) {
-          return { emoji: "🌙", label: "Un croissant de lune" };
-        }
-
-        return { emoji: "🌑", label: "Planète de départ" };
+        return index;
       }
 
-      function updateScore() {
-        const score = getTotalScore();
-        const progress = Math.min((score / GOAL) * 100, 100);
-        const remaining = Math.max(GOAL - score, 0);
-        const planet = getPlanet(score);
+      function save(message="✅ Sauvegardé"){
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        el.saved.textContent = message;
 
-        scoreElement.textContent = String(score);
-        progressBarElement.style.width = `${progress}%`;
-        progressElement.setAttribute("aria-valuenow", String(Math.min(score, GOAL)));
-        planetElement.textContent = planet.emoji;
-        planetElement.setAttribute("aria-label", planet.label);
+        clearTimeout(save.timer);
+        save.timer = setTimeout(() => {
+          el.saved.textContent = "";
+        }, 1500);
+      }
 
-        if (remaining === 0) {
-          progressCaptionElement.textContent = "Mission accomplie ! Bravo Aurèle ! 🎉";
-        } else if (remaining === 1) {
-          progressCaptionElement.textContent =
-            "Encore 1 étoile pour atteindre la mission !";
-        } else {
-          progressCaptionElement.textContent =
-            `Encore ${remaining} étoiles pour atteindre la mission !`;
+      function showToast(text){
+        el.toast.textContent = text;
+        el.toast.classList.remove("show");
+        void el.toast.offsetWidth;
+        el.toast.classList.add("show");
+      }
+
+      function launchRockets(count=8,big=false){
+        for(let i=0;i<count;i++){
+          const rocket = document.createElement("span");
+          rocket.className = "flying-rocket";
+          rocket.textContent = "🚀";
+
+          const size = (big ? 34 : 24) + Math.random() * (big ? 32 : 18);
+          const duration = (big ? 1900 : 1350) + Math.random() * 1200;
+          const delay = Math.random() * (big ? 700 : 350);
+          const drift = -130 + Math.random() * 260;
+          const rotation = -18 + Math.random() * 36;
+
+          rocket.style.left = Math.random() * 94 + "vw";
+          rocket.style.fontSize = size + "px";
+          rocket.style.setProperty("--duration", duration + "ms");
+          rocket.style.setProperty("--delay", delay + "ms");
+          rocket.style.setProperty("--drift", drift + "px");
+          rocket.style.setProperty("--rotation", rotation + "deg");
+
+          el.layer.appendChild(rocket);
+
+          setTimeout(() => {
+            rocket.remove();
+          }, duration + delay + 400);
         }
       }
 
-      function createCounter(dayIndex, type, icon, label) {
-        const wrapper = document.createElement("div");
-        wrapper.className = "counter";
+      function celebrateSmall(type){
+        launchRockets(type === "evening" ? 14 : 6, type === "evening");
 
-        const iconElement = document.createElement("span");
-        iconElement.className = "counter__icon";
-        iconElement.textContent = icon;
-        iconElement.setAttribute("aria-hidden", "true");
+        if(type === "pipi"){
+          showToast("🚀 Bravo Aurèle ! Les fusées décollent !");
+        }
 
-        const textElement = document.createElement("span");
-        textElement.className = "counter__text";
+        if(type === "caca"){
+          showToast("🚀 Super mission ! Encore des fusées !");
+        }
 
-        const labelElement = document.createElement("span");
-        labelElement.className = "counter__label";
-        labelElement.textContent = label;
+        if(type === "evening"){
+          showToast("⭐ Journée réussie : grand décollage !");
+        }
+      }
 
-        const valueElement = document.createElement("span");
-        valueElement.className = "counter__value";
-        valueElement.textContent = String(week[dayIndex][type]);
+      function celebrateMilestone(index){
+        const milestone = MILESTONES[index];
 
-        textElement.append(labelElement, valueElement);
+        launchRockets(index >= 5 ? 38 : 26, true);
 
-        const actionsElement = document.createElement("span");
-        actionsElement.className = "counter__actions";
+        el.planet.classList.remove("pop");
+        void el.planet.offsetWidth;
+        el.planet.classList.add("pop");
 
-        const minusButton = document.createElement("button");
-        minusButton.className = "counter-button counter-button--minus";
-        minusButton.type = "button";
-        minusButton.textContent = "−";
-        minusButton.setAttribute(
-          "aria-label",
-          `Retirer un ${label.toLowerCase()} pour ${dayNames[dayIndex]}`
+        showToast("🚀 Nouvelle étape : " + milestone.name + " !");
+      }
+
+      function checkMilestone(before,after){
+        const beforeMilestone = milestoneIndex(before);
+        const afterMilestone = milestoneIndex(after);
+
+        if(afterMilestone > beforeMilestone){
+          setTimeout(() => {
+            celebrateMilestone(afterMilestone);
+          }, 450);
+        }
+      }
+
+      function changeCount(dayIndex,type,amount){
+        const before = totalScore();
+
+        state.days[dayIndex][type] = Math.max(
+          0,
+          state.days[dayIndex][type] + amount
         );
-        minusButton.disabled = week[dayIndex][type] <= 0;
-        minusButton.addEventListener("click", () => changeCount(dayIndex, type, -1));
 
-        const plusButton = document.createElement("button");
-        plusButton.className = "counter-button";
-        plusButton.type = "button";
-        plusButton.textContent = "+";
-        plusButton.setAttribute(
-          "aria-label",
-          `Ajouter un ${label.toLowerCase()} pour ${dayNames[dayIndex]}`
-        );
-        plusButton.addEventListener("click", () => changeCount(dayIndex, type, 1));
+        const after = totalScore();
 
-        actionsElement.append(minusButton, plusButton);
-        wrapper.append(iconElement, textElement, actionsElement);
+        if(amount > 0){
+          celebrateSmall(type);
+        }
 
-        return wrapper;
+        checkMilestone(before,after);
+        save();
+        render();
       }
 
-      function renderDays() {
-        daysElement.replaceChildren();
+      function toggleEvening(dayIndex){
+        const before = totalScore();
 
-        week.forEach((day, dayIndex) => {
+        state.days[dayIndex].evening = !state.days[dayIndex].evening;
+
+        const after = totalScore();
+
+        if(state.days[dayIndex].evening){
+          celebrateSmall("evening");
+        }
+
+        checkMilestone(before,after);
+        save();
+        render();
+      }
+
+      function renderDays(){
+        el.days.innerHTML = "";
+
+        state.days.forEach((day,index) => {
           const card = document.createElement("article");
-          card.className = "card day-card";
+          card.className = "day" + (day.evening ? " complete" : "");
 
-          const header = document.createElement("div");
-          header.className = "day-card__header";
+          card.innerHTML = `
+            <div class="day-head">
+              <div class="day-name">${DAYS[index]}</div>
+              <button class="evening-star ${day.evening ? "on" : ""}"
+                      aria-label="Étoile du soir pour ${DAYS[index]}">⭐</button>
+            </div>
 
-          const title = document.createElement("h2");
-          title.textContent = dayNames[dayIndex];
+            <div class="counter">
+              <div class="counter-label">
+                💧 Pipi <span class="count-badge">${day.pipi}</span>
+              </div>
+              <div class="counter-actions">
+                <button class="minus" aria-label="Retirer un pipi">−</button>
+                <button class="plus" aria-label="Ajouter un pipi">+💧</button>
+              </div>
+            </div>
 
-          const starButton = document.createElement("button");
-          starButton.className = "star-button";
-          starButton.type = "button";
-          starButton.textContent = day.star ? "⭐" : "☆";
-          starButton.setAttribute("aria-pressed", String(day.star));
-          starButton.setAttribute(
-            "aria-label",
-            `${day.star ? "Retirer" : "Ajouter"} l’étoile bonus de ${dayNames[dayIndex]}`
-          );
-          starButton.addEventListener("click", () => toggleStar(dayIndex));
+            <div class="counter">
+              <div class="counter-label">
+                💩 Caca <span class="count-badge">${day.caca}</span>
+              </div>
+              <div class="counter-actions">
+                <button class="minus" aria-label="Retirer un caca">−</button>
+                <button class="plus" aria-label="Ajouter un caca">+💩</button>
+              </div>
+            </div>
 
-          header.append(title, starButton);
+            <p class="evening-note">
+              ${
+                day.evening
+                  ? "🎉 Journée réussie — bonus de 2 étoiles !"
+                  : "Touche l’étoile quand la journée est réussie"
+              }
+            </p>
+          `;
 
-          const counterGrid = document.createElement("div");
-          counterGrid.className = "counter-grid";
-          counterGrid.append(
-            createCounter(dayIndex, "pipi", "💧", "Pipi"),
-            createCounter(dayIndex, "caca", "💩", "Caca")
-          );
+          const buttons = card.querySelectorAll("button");
 
-          card.append(header, counterGrid);
-          daysElement.append(card);
+          buttons[0].addEventListener("click",() => toggleEvening(index));
+          buttons[1].addEventListener("click",() => changeCount(index,"pipi",-1));
+          buttons[2].addEventListener("click",() => changeCount(index,"pipi",1));
+          buttons[3].addEventListener("click",() => changeCount(index,"caca",-1));
+          buttons[4].addEventListener("click",() => changeCount(index,"caca",1));
+
+          el.days.appendChild(card);
         });
       }
 
-      function render() {
-    renderDays();
-    updateScore();
-    checkPlanetChange(getTotalScore());
-}
+      function renderScore(){
+        const score = totalScore();
+        const index = milestoneIndex(score);
+        const current = MILESTONES[index];
+        const next = MILESTONES[index + 1];
 
-      function changeCount(dayIndex, type, amount) {
-        week[dayIndex][type] = Math.max(0, week[dayIndex][type] + amount);
-        saveWeek();
-        render();
-      }
+        el.score.textContent = score + " ⭐";
+        el.planet.textContent = current.planet;
+        el.destination.textContent = current.message;
 
-      function toggleStar(dayIndex) {
-        const wasComplete = getTotalScore() >= GOAL;
-        week[dayIndex].star = !week[dayIndex].star;
-        saveWeek();
-        render();
+        if(next){
+          const span = next.score - current.score;
+          const progress = score - current.score;
+          const percent = Math.min(100,(progress / span) * 100);
 
-        const isComplete = getTotalScore() >= GOAL;
-        if (!wasComplete && isComplete) {
-          planetElement.classList.remove("is-celebrating");
-          void planetElement.offsetWidth;
-          planetElement.classList.add("is-celebrating");
+          el.fill.style.width = percent + "%";
+
+          const remaining = next.score - score;
+          el.next.textContent =
+            "Encore " +
+            remaining +
+            " étoile" +
+            (remaining > 1 ? "s" : "") +
+            " pour " +
+            next.name +
+            ".";
+        }else{
+          el.fill.style.width = "100%";
+          el.next.textContent = "Mission galactique accomplie !";
         }
       }
 
-      function resetWeek() {
-        const confirmed = window.confirm(
-          "Recommencer la semaine et effacer tous les progrès ?"
+      function render(){
+        renderDays();
+        renderScore();
+      }
+
+      function resetWeek(){
+        const accepted = confirm(
+          "Recommencer une nouvelle semaine et effacer les réussites actuelles ?"
         );
 
-        if (!confirmed) {
-          return;
-        }
+        if(!accepted) return;
 
-        week = createEmptyWeek();
-        saveWeek();
+        state = emptyState();
+        save("✅ Nouvelle semaine prête");
         render();
+        showToast("🚀 Nouvelle mission prête !");
+        launchRockets(12,true);
       }
-const PLANET_LEVEL_KEY = "mission-pot-aurele-planet-level";
 
-function getPlanetLevel(stars) {
-  if (stars >= 30) return 3;
-  if (stars >= 15) return 2;
-  if (stars >= 5) return 1;
-  return 0;
-}
+      function exportData(){
+        const blob = new Blob(
+          [JSON.stringify(state,null,2)],
+          {type:"application/json"}
+        );
 
-function launchRocketCelebration() {
-  const container = document.getElementById("rocketCelebration");
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
 
-  if (!container) return;
+        link.href = url;
+        link.download = "mission-pot-aurele-sauvegarde.json";
+        link.click();
 
-  container.innerHTML = "";
+        URL.revokeObjectURL(url);
+        showToast("💾 Sauvegarde créée !");
+      }
 
-  for (let i = 0; i < 18; i++) {
-    const rocket = document.createElement("span");
+      function importData(event){
+        const file = event.target.files && event.target.files[0];
+        if(!file) return;
 
-    rocket.className = "celebration-rocket";
-    rocket.textContent = "🚀";
+        const reader = new FileReader();
 
-    rocket.style.left = Math.random() * 94 + "%";
-    rocket.style.fontSize = 24 + Math.random() * 26 + "px";
-    rocket.style.setProperty("--duration", 1.8 + Math.random() * 1.5 + "s");
-    rocket.style.setProperty("--delay", Math.random() * 0.8 + "s");
-    rocket.style.setProperty("--drift", -80 + Math.random() * 160 + "px");
-    rocket.style.setProperty("--rotation", -18 + Math.random() * 36 + "deg");
+        reader.onload = () => {
+          try{
+            state = normalize(JSON.parse(reader.result));
+            save("✅ Sauvegarde restaurée");
+            render();
+            launchRockets(20,true);
+            showToast("📥 Progrès restaurés !");
+          }catch(error){
+            alert("Ce fichier de sauvegarde n’est pas valide.");
+          }
 
-    container.appendChild(rocket);
-  }
+          event.target.value = "";
+        };
 
-  window.setTimeout(() => {
-    container.innerHTML = "";
-  }, 4500);
-}
+        reader.readAsText(file);
+      }
 
-function checkPlanetChange(stars) {
-  const newLevel = getPlanetLevel(stars);
-  const savedLevelRaw = localStorage.getItem(PLANET_LEVEL_KEY);
+      el.resetButton.addEventListener("click",resetWeek);
+      el.exportButton.addEventListener("click",exportData);
+      el.importButton.addEventListener("click",() => el.importInput.click());
+      el.importInput.addEventListener("change",importData);
 
-  if (savedLevelRaw === null) {
-    localStorage.setItem(PLANET_LEVEL_KEY, String(newLevel));
-    return;
-  }
-
-  const savedLevel = Number(savedLevelRaw);
-
-  if (newLevel > savedLevel) {
-    launchRocketCelebration();
-  }
-
-  localStorage.setItem(PLANET_LEVEL_KEY, String(newLevel));
-}
-      resetButton.addEventListener("click", resetWeek);
       render();
-launchRocketCelebration();
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("./service-worker.js")
-            .catch(() => {
-              // L’application reste utilisable sans service worker.
-            });
-        });
-      }
     })();
   </script>
 </body>
