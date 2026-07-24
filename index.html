@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mission Pot de Départ 🚀</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(#b9ddff, #ffffff);
+  color: #17345f;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 25px;
+}
+
+h1 {
+  font-size: 34px;
+  color: #1769c2;
+}
+
+.rocket {
+  font-size: 70px;
+  animation: float 2s infinite;
+}
+
+@keyframes float {
+  50% { transform: translateY(-12px); }
+}
+
+.card {
+  background: white;
+  border-radius: 25px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+}
+
+button {
+  border: none;
+  background: #1769c2;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 20px;
+  font-size: 18px;
+  margin: 8px;
+}
+
+.star {
+  font-size: 50px;
+}
+
+#progress {
+  font-size: 22px;
+  margin: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="rocket">🚀</div>
+
+<h1>Mission Pot de Départ</h1>
+
+<p>
+Astronaute : <input id="name" placeholder="Prénom">
+</p>
+
+<div class="card">
+
+<h2>🌟 Progression</h2>
+
+<div id="progress">
+0 étoiles
+</div>
+
+<div class="star" id="star">
+☆
+</div>
+
+<button onclick="addStar()">
+⭐ J'ai réussi !
+</button>
+
+</div>
+
+<div class="card">
+<h2>🌙 Destination</h2>
+<div id="planet">
+🌍 Terre
+</div>
+</div>
+
+</div>
+
+
+<script>
+
+let stars = Number(localStorage.getItem("stars")) || 0;
+
+function update(){
+ document.getElementById("progress").innerHTML =
+ stars + " étoile" + (stars>1 ? "s" : "");
+
+ if(stars >= 10){
+   document.getElementById("planet").innerHTML="🪐 Saturne";
+ }
+ else if(stars >=5){
+   document.getElementById("planet").innerHTML="🔴 Mars";
+ }
+ else if(stars >=2){
+   document.getElementById("planet").innerHTML="🌙 Lune";
+ }
+}
+
+function addStar(){
+ stars++;
+ localStorage.setItem("stars", stars);
+ document.getElementById("star").innerHTML="⭐";
+ update();
+}
+
+update();
+
+</script>
+
+</body>
+</html>
