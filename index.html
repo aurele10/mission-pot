@@ -1,409 +1,670 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1769c2">
+  <meta name="description" content="Mission Pot d’Aurèle : un suivi ludique et motivant de la semaine.">
 
-<link rel="manifest" href="manifest.json">
+  <title>Mission Pot d’Aurèle 🚀</title>
 
-<title>Mission Pot d'Aurèle 🚀</title>
+  <link rel="manifest" href="./manifest.json">
 
-<style>
+  <style>
+    :root {
+      color-scheme: light;
+      --blue: #1769c2;
+      --blue-dark: #0d4f99;
+      --sky: #dff1ff;
+      --white: #ffffff;
+      --text: #183046;
+      --muted: #64798b;
+      --success: #17875b;
+      --danger: #c73a4a;
+      --shadow: 0 10px 30px rgba(25, 76, 117, 0.14);
+      --radius: 22px;
+    }
 
-:root{
-  --blue:#1769c2;
-  --sky:#dff1ff;
-  --dark:#17345f;
-  --yellow:#ffd84d;
-  --green:#55c58a;
-  --white:#ffffff;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-*{
-  box-sizing:border-box;
-}
+    html {
+      min-height: 100%;
+      background: var(--sky);
+    }
 
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(#bfe3ff,#ffffff);
-  color:var(--dark);
-}
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding:
+        max(20px, env(safe-area-inset-top))
+        max(16px, env(safe-area-inset-right))
+        max(28px, env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left));
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 38%),
+        linear-gradient(180deg, #dff1ff 0%, #eef8ff 100%);
+      color: var(--text);
+      font-family: Inter, ui-rounded, "SF Pro Rounded", system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-.container{
-  max-width:520px;
-  margin:auto;
-  padding:20px;
-  text-align:center;
-}
+    button,
+    input {
+      font: inherit;
+    }
 
-.rocket{
-  font-size:75px;
-  animation:float 2s infinite ease-in-out;
-}
+    button {
+      touch-action: manipulation;
+    }
 
-@keyframes float{
-  50%{transform:translateY(-12px);}
-}
+    .app {
+      width: min(100%, 760px);
+      margin: 0 auto;
+    }
 
-h1{
-  color:var(--blue);
-  font-size:32px;
-}
+    .hero {
+      padding: 10px 4px 18px;
+      text-align: center;
+    }
 
-.card{
-  background:white;
-  border-radius:25px;
-  padding:20px;
-  margin:18px 0;
-  box-shadow:0 8px 25px rgba(0,0,0,.12);
-}
+    .hero__eyebrow {
+      margin: 0 0 5px;
+      color: var(--blue);
+      font-size: 0.78rem;
+      font-weight: 850;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
 
-.planet{
-  font-size:60px;
-}
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 8vw, 3.45rem);
+      line-height: 1;
+      letter-spacing: -0.045em;
+    }
 
-.stars{
-  font-size:25px;
-  color:#d99b00;
-  margin:10px;
-}
+    .hero__text {
+      max-width: 520px;
+      margin: 12px auto 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
 
-.progress{
-  height:25px;
-  background:#dcecff;
-  border-radius:20px;
-  overflow:hidden;
-}
+    .card {
+      border: 1px solid rgba(23, 105, 194, 0.1);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
 
-.progress-bar{
-  height:100%;
-  width:0%;
-  background:linear-gradient(90deg,#55c58a,#ffd84d);
-  transition:.5s;
-}
+    .score-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: center;
+      margin-bottom: 18px;
+      padding: 22px;
+      overflow: hidden;
+    }
 
-.destination{
-  margin-top:12px;
-  font-weight:bold;
-}
+    .score-card__label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
 
-.day{
-  background:#fafdff;
-  border-radius:20px;
-  padding:15px;
-  margin:12px 0;
-  text-align:left;
-}
+    .score {
+      margin: 3px 0 13px;
+      font-size: clamp(2.15rem, 10vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
 
-.day h3{
-  margin:0 0 12px;
-  color:var(--blue);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
+    .progress {
+      height: 15px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e5eef5;
+    }
 
-.action{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  margin:12px 0;
-}
+    .progress__bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #1769c2, #54b8ff);
+      transition: width 300ms ease;
+    }
 
-.icon-count{
-  font-size:22px;
-}
+    .score-card__caption {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
 
-button{
-  border:0;
-  border-radius:18px;
-  padding:12px 18px;
-  background:var(--blue);
-  color:white;
-  font-size:18px;
-}
+    .planet {
+      display: grid;
+      width: clamp(82px, 20vw, 120px);
+      aspect-ratio: 1;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #f1f9ff, #cfeaff);
+      box-shadow:
+        inset -12px -12px 24px rgba(23, 105, 194, 0.1),
+        0 12px 28px rgba(23, 105, 194, 0.16);
+      font-size: clamp(3.25rem, 13vw, 5.7rem);
+      transition: transform 220ms ease;
+    }
 
-.star{
-  font-size:40px;
-  cursor:pointer;
-  filter:grayscale(1);
-}
+    .planet.is-celebrating {
+      animation: bounce 600ms ease;
+    }
 
-.star.active{
-  filter:none;
-}
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0 2px 12px;
+    }
 
-.message{
-  color:var(--green);
-  font-weight:bold;
-  min-height:25px;
-}
+    .reset-button {
+      border: 0;
+      border-radius: 999px;
+      padding: 9px 14px;
+      background: rgba(255, 255, 255, 0.74);
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 750;
+      cursor: pointer;
+    }
 
-</style>
+    .reset-button:hover,
+    .reset-button:focus-visible {
+      color: var(--danger);
+      outline: 3px solid rgba(199, 58, 74, 0.14);
+    }
+
+    .days {
+      display: grid;
+      gap: 14px;
+    }
+
+    .day-card {
+      padding: 18px;
+    }
+
+    .day-card__header {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .day-card h2 {
+      margin: 0;
+      font-size: 1.22rem;
+    }
+
+    .star-button {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: #eef4f8;
+      font-size: 1.6rem;
+      cursor: pointer;
+      transition: transform 150ms ease, background 150ms ease;
+    }
+
+    .star-button:hover {
+      transform: scale(1.07);
+    }
+
+    .star-button[aria-pressed="true"] {
+      background: #fff4c2;
+    }
+
+    .counter-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .counter {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      min-width: 0;
+      border-radius: 16px;
+      padding: 10px;
+      background: #f2f8fc;
+    }
+
+    .counter__icon {
+      font-size: 1.45rem;
+    }
+
+    .counter__text {
+      min-width: 0;
+    }
+
+    .counter__label {
+      display: block;
+      overflow: hidden;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 750;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .counter__value {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .counter__actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .counter-button {
+      display: grid;
+      width: 36px;
+      height: 36px;
+      place-items: center;
+      border: 0;
+      border-radius: 12px;
+      background: var(--blue);
+      color: var(--white);
+      font-size: 1.2rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .counter-button:hover,
+    .counter-button:focus-visible {
+      background: var(--blue-dark);
+      outline: 3px solid rgba(23, 105, 194, 0.2);
+    }
+
+    .counter-button--minus {
+      background: #dce9f2;
+      color: var(--text);
+    }
+
+    .counter-button--minus:hover,
+    .counter-button--minus:focus-visible {
+      background: #cadde9;
+    }
+
+    .footer {
+      padding: 22px 8px 4px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.8rem;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) rotate(0); }
+      35% { transform: translateY(-12px) rotate(-7deg); }
+      70% { transform: translateY(2px) rotate(7deg); }
+    }
+
+    @media (min-width: 640px) {
+      .days {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .day-card:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .score-card {
+        gap: 10px;
+        padding: 18px;
+      }
+
+      .counter-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
-<div class="container">
-
-<div class="rocket">🚀</div>
-
-<h1>Mission Pot de Départ</h1>
-
-<p>
-Bienvenue <strong>Aurèle</strong> ⭐
-</p>
-
-
-<div class="card">
-
-<h2>🌌 Voyage spatial</h2>
-
-<div id="planet" class="planet">
-🌍
-</div>
-
-<div id="stars" class="stars">
-0 ⭐
-</div>
-
-<div class="progress">
-<div id="bar" class="progress-bar"></div>
-</div>
-
-<p id="destination" class="destination">
-La fusée se prépare !
-</p>
-
-</div>
-
-
-<div class="card">
-
-<h2>📅 Missions de la semaine</h2>
-
-<div id="days"></div>
-
-</div>
-<div class="card">
-
-<h2>🌟 Récompense du soir</h2>
-
-<p>
-Quand la journée est réussie :
-</p>
-
-<div id="todayReward" class="star">
-⭐
-</div>
-
-</div>
-
-<p id="message" class="message"></p>
-
-</div>
-
-
-<script>
-
-const jours = [
-"Lundi",
-"Mardi",
-"Mercredi",
-"Jeudi",
-"Vendredi",
-"Samedi",
-"Dimanche"
-];
-
-
-let data;
-
-try{
- data = JSON.parse(localStorage.getItem("missionPotAurele"));
-}
-catch(e){
- data=null;
-}
-
-
-if(!data || !Array.isArray(data.days)){
- data={
-  days: jours.map(()=>({
-    pipi:0,
-    caca:0,
-    reward:false
-  }))
- };
-}
-
-
-function save(){
- localStorage.setItem(
-  "missionPotAurele",
-  JSON.stringify(data)
- );
-}
-
-
-function totalStars(){
-
- let total=0;
-
- data.days.forEach(j=>{
-  total += j.pipi;
-  total += j.caca;
-
-  if(j.reward){
-   total += 2;
-  }
- });
-
- return total;
-
-}
-
-
-function add(day,type){
-
- data.days[day][type]++;
-
- save();
- render();
-
-}
-
-
-function toggleReward(day){
-
- data.days[day].reward =
- !data.days[day].reward;
-
- save();
-
- document.getElementById("message").textContent =
- data.days[day].reward
- ?
- "🚀 Bravo Aurèle ! Décollage réussi !"
- :
- "";
-
- render();
-
-}
-
-
-function render(){
-
- const container =
- document.getElementById("days");
-
- container.innerHTML="";
-
-
- jours.forEach((jour,i)=>{
-
- const d=data.days[i];
-
-
- container.innerHTML += `
-
- <div class="day">
-
- <h3>
- ${jour}
-
- <span 
- onclick="toggleReward(${i})"
- class="star ${d.reward ? 'active':''}">
- ⭐
- </span>
-
- </h3>
-
-
- <div class="action">
-
- <span class="icon-count">
- 💧 Pipi : ${d.pipi}
- </span>
-
- <button onclick="add(${i},'pipi')">
- + 💧
- </button>
-
- </div>
-
-
- <div class="action">
-
- <span class="icon-count">
- 💩 Caca : ${d.caca}
- </span>
-
- <button onclick="add(${i},'caca')">
- + 💩
- </button>
-
- </div>
-
-
- </div>
-
- `;
-
- });
-
-
- let stars=totalStars();
-
-
- document.getElementById("stars").textContent =
- stars+" ⭐";
-
-
- let percent=Math.min(stars*4,100);
-
-
- document.getElementById("bar").style.width =
- percent+"%";
-
-
- let planet="🌍";
- let text="La fusée se prépare !";
-
-
- if(stars>=5){
-  planet="🌙";
-  text="La fusée atteint la Lune !";
- }
-
- if(stars>=15){
-  planet="🔴";
-  text="Direction Mars !";
- }
-
- if(stars>=30){
-  planet="🪐";
-  text="Saturne est en vue !";
- }
-
-
- document.getElementById("planet").textContent =
- planet;
-
-
- document.getElementById("destination").textContent =
- text;
-
-}
-
-
-render();
-
-</script>
-
+  <main class="app">
+    <header class="hero">
+      <p class="hero__eyebrow">Objectif de la semaine</p>
+      <h1>🚀 Mission Pot d’Aurèle</h1>
+      <p class="hero__text">
+        Chaque petit progrès fait grandir la planète. On avance un jour après l’autre !
+      </p>
+    </header>
+
+    <section class="card score-card" aria-labelledby="score-title">
+      <div>
+        <p class="score-card__label" id="score-title">Étoiles gagnées</p>
+        <p class="score"><span id="score">0</span> ⭐</p>
+
+        <div
+          class="progress"
+          role="progressbar"
+          aria-label="Progression vers l’objectif"
+          aria-valuemin="0"
+          aria-valuemax="30"
+          aria-valuenow="0"
+        >
+          <div class="progress__bar" id="progress-bar"></div>
+        </div>
+
+        <p class="score-card__caption" id="progress-caption">
+          Encore 30 étoiles pour atteindre la mission !
+        </p>
+      </div>
+
+      <div class="planet" id="planet" aria-label="Planète de départ" role="img">🌑</div>
+    </section>
+
+    <div class="toolbar">
+      <button class="reset-button" id="reset-button" type="button">
+        Recommencer la semaine
+      </button>
+    </div>
+
+    <section class="days" id="days" aria-label="Suivi des jours de la semaine"></section>
+
+    <footer class="footer">
+      Les progrès sont enregistrés automatiquement sur cet appareil.
+    </footer>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const STORAGE_KEY = "missionAurele";
+      const GOAL = 30;
+      const STAR_BONUS = 2;
+
+      const dayNames = [
+        "Lundi",
+        "Mardi",
+        "Mercredi",
+        "Jeudi",
+        "Vendredi",
+        "Samedi",
+        "Dimanche"
+      ];
+
+      const scoreElement = document.getElementById("score");
+      const progressElement = document.querySelector(".progress");
+      const progressBarElement = document.getElementById("progress-bar");
+      const progressCaptionElement = document.getElementById("progress-caption");
+      const planetElement = document.getElementById("planet");
+      const daysElement = document.getElementById("days");
+      const resetButton = document.getElementById("reset-button");
+
+      function createEmptyWeek() {
+        return dayNames.map(() => ({
+          pipi: 0,
+          caca: 0,
+          star: false
+        }));
+      }
+
+      function normalizeWeek(value) {
+        if (!Array.isArray(value) || value.length !== dayNames.length) {
+          return createEmptyWeek();
+        }
+
+        return value.map((day) => ({
+          pipi: Math.max(0, Number(day.pipi ?? day.p ?? 0) || 0),
+          caca: Math.max(0, Number(day.caca ?? day.c ?? 0) || 0),
+          star: Boolean(day.star ?? day.s)
+        }));
+      }
+
+      function loadWeek() {
+        try {
+          const savedValue = localStorage.getItem(STORAGE_KEY);
+          return savedValue
+            ? normalizeWeek(JSON.parse(savedValue))
+            : createEmptyWeek();
+        } catch (error) {
+          console.warn("Impossible de lire les progrès enregistrés.", error);
+          return createEmptyWeek();
+        }
+      }
+
+      let week = loadWeek();
+
+      function saveWeek() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(week));
+        } catch (error) {
+          console.warn("Impossible d’enregistrer les progrès.", error);
+        }
+      }
+
+      function getTotalScore() {
+        return week.reduce(
+          (total, day) =>
+            total + day.pipi + day.caca + (day.star ? STAR_BONUS : 0),
+          0
+        );
+      }
+
+      function getPlanet(score) {
+        if (score >= GOAL) {
+          return { emoji: "🪐", label: "Mission accomplie" };
+        }
+
+        if (score >= 20) {
+          return { emoji: "🌍", label: "Une belle planète bleue" };
+        }
+
+        if (score >= 10) {
+          return { emoji: "🌕", label: "Une lune brillante" };
+        }
+
+        if (score >= 5) {
+          return { emoji: "🌙", label: "Un croissant de lune" };
+        }
+
+        return { emoji: "🌑", label: "Planète de départ" };
+      }
+
+      function updateScore() {
+        const score = getTotalScore();
+        const progress = Math.min((score / GOAL) * 100, 100);
+        const remaining = Math.max(GOAL - score, 0);
+        const planet = getPlanet(score);
+
+        scoreElement.textContent = String(score);
+        progressBarElement.style.width = `${progress}%`;
+        progressElement.setAttribute("aria-valuenow", String(Math.min(score, GOAL)));
+        planetElement.textContent = planet.emoji;
+        planetElement.setAttribute("aria-label", planet.label);
+
+        if (remaining === 0) {
+          progressCaptionElement.textContent = "Mission accomplie ! Bravo Aurèle ! 🎉";
+        } else if (remaining === 1) {
+          progressCaptionElement.textContent =
+            "Encore 1 étoile pour atteindre la mission !";
+        } else {
+          progressCaptionElement.textContent =
+            `Encore ${remaining} étoiles pour atteindre la mission !`;
+        }
+      }
+
+      function createCounter(dayIndex, type, icon, label) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "counter";
+
+        const iconElement = document.createElement("span");
+        iconElement.className = "counter__icon";
+        iconElement.textContent = icon;
+        iconElement.setAttribute("aria-hidden", "true");
+
+        const textElement = document.createElement("span");
+        textElement.className = "counter__text";
+
+        const labelElement = document.createElement("span");
+        labelElement.className = "counter__label";
+        labelElement.textContent = label;
+
+        const valueElement = document.createElement("span");
+        valueElement.className = "counter__value";
+        valueElement.textContent = String(week[dayIndex][type]);
+
+        textElement.append(labelElement, valueElement);
+
+        const actionsElement = document.createElement("span");
+        actionsElement.className = "counter__actions";
+
+        const minusButton = document.createElement("button");
+        minusButton.className = "counter-button counter-button--minus";
+        minusButton.type = "button";
+        minusButton.textContent = "−";
+        minusButton.setAttribute(
+          "aria-label",
+          `Retirer un ${label.toLowerCase()} pour ${dayNames[dayIndex]}`
+        );
+        minusButton.disabled = week[dayIndex][type] <= 0;
+        minusButton.addEventListener("click", () => changeCount(dayIndex, type, -1));
+
+        const plusButton = document.createElement("button");
+        plusButton.className = "counter-button";
+        plusButton.type = "button";
+        plusButton.textContent = "+";
+        plusButton.setAttribute(
+          "aria-label",
+          `Ajouter un ${label.toLowerCase()} pour ${dayNames[dayIndex]}`
+        );
+        plusButton.addEventListener("click", () => changeCount(dayIndex, type, 1));
+
+        actionsElement.append(minusButton, plusButton);
+        wrapper.append(iconElement, textElement, actionsElement);
+
+        return wrapper;
+      }
+
+      function renderDays() {
+        daysElement.replaceChildren();
+
+        week.forEach((day, dayIndex) => {
+          const card = document.createElement("article");
+          card.className = "card day-card";
+
+          const header = document.createElement("div");
+          header.className = "day-card__header";
+
+          const title = document.createElement("h2");
+          title.textContent = dayNames[dayIndex];
+
+          const starButton = document.createElement("button");
+          starButton.className = "star-button";
+          starButton.type = "button";
+          starButton.textContent = day.star ? "⭐" : "☆";
+          starButton.setAttribute("aria-pressed", String(day.star));
+          starButton.setAttribute(
+            "aria-label",
+            `${day.star ? "Retirer" : "Ajouter"} l’étoile bonus de ${dayNames[dayIndex]}`
+          );
+          starButton.addEventListener("click", () => toggleStar(dayIndex));
+
+          header.append(title, starButton);
+
+          const counterGrid = document.createElement("div");
+          counterGrid.className = "counter-grid";
+          counterGrid.append(
+            createCounter(dayIndex, "pipi", "💧", "Pipi"),
+            createCounter(dayIndex, "caca", "💩", "Caca")
+          );
+
+          card.append(header, counterGrid);
+          daysElement.append(card);
+        });
+      }
+
+      function render() {
+        renderDays();
+        updateScore();
+      }
+
+      function changeCount(dayIndex, type, amount) {
+        week[dayIndex][type] = Math.max(0, week[dayIndex][type] + amount);
+        saveWeek();
+        render();
+      }
+
+      function toggleStar(dayIndex) {
+        const wasComplete = getTotalScore() >= GOAL;
+        week[dayIndex].star = !week[dayIndex].star;
+        saveWeek();
+        render();
+
+        const isComplete = getTotalScore() >= GOAL;
+        if (!wasComplete && isComplete) {
+          planetElement.classList.remove("is-celebrating");
+          void planetElement.offsetWidth;
+          planetElement.classList.add("is-celebrating");
+        }
+      }
+
+      function resetWeek() {
+        const confirmed = window.confirm(
+          "Recommencer la semaine et effacer tous les progrès ?"
+        );
+
+        if (!confirmed) {
+          return;
+        }
+
+        week = createEmptyWeek();
+        saveWeek();
+        render();
+      }
+
+      resetButton.addEventListener("click", resetWeek);
+      render();
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("./service-worker.js")
+            .catch(() => {
+              // L’application reste utilisable sans service worker.
+            });
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
