@@ -1,0 +1,10 @@
+{
+  "name": "Mission Pot de Départ 🚀",
+  "short_name": "Mission Pot",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#EAF4FF",
+  "theme_color": "#1769C2",
+  "lang": "fr",
+  "description": "Le carnet spatial de l'apprentissage de la propreté."
+}
