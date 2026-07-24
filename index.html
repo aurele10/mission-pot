@@ -11,128 +11,134 @@
 <style>
 
 :root{
- --blue:#1769c2;
- --sky:#dff1ff;
- --dark:#12345b;
- --gold:#ffd84d;
- --green:#55c58a;
+  --blue:#1769c2;
+  --sky:#dff1ff;
+  --dark:#17345f;
+  --yellow:#ffd84d;
+  --green:#55c58a;
+  --white:#ffffff;
 }
 
 *{
- box-sizing:border-box;
+  box-sizing:border-box;
 }
 
 body{
- margin:0;
- min-height:100vh;
- font-family:Arial,sans-serif;
- background:linear-gradient(#bfe3ff,#ffffff);
- color:var(--dark);
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(#bfe3ff,#ffffff);
+  color:var(--dark);
 }
 
 .container{
- max-width:520px;
- margin:auto;
- padding:20px;
- text-align:center;
+  max-width:520px;
+  margin:auto;
+  padding:20px;
+  text-align:center;
 }
 
 .rocket{
- font-size:75px;
- animation:float 2s infinite ease-in-out;
+  font-size:75px;
+  animation:float 2s infinite ease-in-out;
 }
 
 @keyframes float{
- 50%{transform:translateY(-12px);}
+  50%{transform:translateY(-12px);}
 }
 
 h1{
- color:var(--blue);
- font-size:32px;
- margin:5px;
+  color:var(--blue);
+  font-size:32px;
 }
 
 .card{
- background:white;
- border-radius:25px;
- padding:20px;
- margin:18px 0;
- box-shadow:0 8px 25px rgba(0,0,0,.12);
+  background:white;
+  border-radius:25px;
+  padding:20px;
+  margin:18px 0;
+  box-shadow:0 8px 25px rgba(0,0,0,.12);
 }
 
 .planet{
- font-size:55px;
+  font-size:60px;
 }
 
 .stars{
- font-size:24px;
- color:#e5a900;
- min-height:35px;
+  font-size:25px;
+  color:#d99b00;
+  margin:10px;
 }
 
 .progress{
- height:25px;
- background:#dcecff;
- border-radius:20px;
- overflow:hidden;
- margin:15px 0;
+  height:25px;
+  background:#dcecff;
+  border-radius:20px;
+  overflow:hidden;
 }
 
 .progress-bar{
- height:100%;
- width:0%;
- background:linear-gradient(90deg,#55c58a,#ffd84d);
- transition:.5s;
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#55c58a,#ffd84d);
+  transition:.5s;
 }
 
-button{
- border:0;
- border-radius:20px;
- padding:14px 18px;
- font-size:18px;
- background:var(--blue);
- color:white;
- margin:6px;
-}
-
-.plus{
- font-size:22px;
+.destination{
+  margin-top:12px;
+  font-weight:bold;
 }
 
 .day{
- background:#fff;
- border-radius:20px;
- padding:15px;
- margin:12px 0;
- text-align:left;
+  background:#fafdff;
+  border-radius:20px;
+  padding:15px;
+  margin:12px 0;
+  text-align:left;
 }
 
 .day h3{
- color:var(--blue);
- margin:0;
- display:flex;
- justify-content:space-between;
+  margin:0 0 12px;
+  color:var(--blue);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.count{
- font-size:20px;
- margin:8px 0;
+.action{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:12px 0;
 }
 
-.bigstar{
- font-size:45px;
- cursor:pointer;
- filter:grayscale(1);
+.icon-count{
+  font-size:22px;
 }
 
-.bigstar.on{
- filter:none;
+button{
+  border:0;
+  border-radius:18px;
+  padding:12px 18px;
+  background:var(--blue);
+  color:white;
+  font-size:18px;
+}
+
+.star{
+  font-size:40px;
+  cursor:pointer;
+  filter:grayscale(1);
+}
+
+.star.active{
+  filter:none;
 }
 
 .message{
- color:var(--green);
- font-weight:bold;
- min-height:25px;
+  color:var(--green);
+  font-weight:bold;
+  min-height:25px;
 }
 
 </style>
@@ -150,6 +156,7 @@ button{
 Bienvenue <strong>Aurèle</strong> ⭐
 </p>
 
+
 <div class="card">
 
 <h2>🌌 Voyage spatial</h2>
@@ -158,33 +165,43 @@ Bienvenue <strong>Aurèle</strong> ⭐
 🌍
 </div>
 
-<div class="stars" id="totalStars">
+<div id="stars" class="stars">
 0 ⭐
 </div>
 
 <div class="progress">
-<div id="progressBar" class="progress-bar"></div>
+<div id="bar" class="progress-bar"></div>
 </div>
 
-<p id="destination">
-La fusée se prépare au décollage !
+<p id="destination" class="destination">
+La fusée se prépare !
 </p>
 
 </div>
-<div class="card">
-<h2>📅 Mission de la semaine</h2>
-<div id="days"></div>
-</div>
+
 
 <div class="card">
-<h2>🌟 Récompense</h2
-<div id="rewardStar" class="bigstar" onclick="toggleReward()">
+
+<h2>📅 Missions de la semaine</h2>
+
+<div id="days"></div>
+
+</div>
+<div class="card">
+
+<h2>🌟 Récompense du soir</h2>
+
+<p>
+Quand la journée est réussie :
+</p>
+
+<div id="todayReward" class="star">
 ⭐
 </div>
 
-<p id="message" class="message"></p>
-
 </div>
+
+<p id="message" class="message"></p>
 
 </div>
 
@@ -202,13 +219,25 @@ const jours = [
 ];
 
 
-let data = JSON.parse(localStorage.getItem("missionPotAurele")) || {
-  days: jours.map(() => ({
+let data;
+
+try{
+ data = JSON.parse(localStorage.getItem("missionPotAurele"));
+}
+catch(e){
+ data=null;
+}
+
+
+if(!data || !Array.isArray(data.days)){
+ data={
+  days: jours.map(()=>({
     pipi:0,
     caca:0,
     reward:false
   }))
-};
+ };
+}
 
 
 function save(){
@@ -224,9 +253,12 @@ function totalStars(){
  let total=0;
 
  data.days.forEach(j=>{
-   total += j.pipi;
-   total += j.caca;
-   if(j.reward) total += 2;
+  total += j.pipi;
+  total += j.caca;
+
+  if(j.reward){
+   total += 2;
+  }
  });
 
  return total;
@@ -250,6 +282,14 @@ function toggleReward(day){
  !data.days[day].reward;
 
  save();
+
+ document.getElementById("message").textContent =
+ data.days[day].reward
+ ?
+ "🚀 Bravo Aurèle ! Décollage réussi !"
+ :
+ "";
+
  render();
 
 }
@@ -257,7 +297,7 @@ function toggleReward(day){
 
 function render(){
 
- let container =
+ const container =
  document.getElementById("days");
 
  container.innerHTML="";
@@ -265,7 +305,8 @@ function render(){
 
  jours.forEach((jour,i)=>{
 
- let d=data.days[i];
+ const d=data.days[i];
+
 
  container.innerHTML += `
 
@@ -274,30 +315,39 @@ function render(){
  <h3>
  ${jour}
 
- <span onclick="toggleReward(${i})"
- class="bigstar ${d.reward?'on':''}">
+ <span 
+ onclick="toggleReward(${i})"
+ class="star ${d.reward ? 'active':''}">
  ⭐
  </span>
 
  </h3>
 
 
- <div class="count">
+ <div class="action">
+
+ <span class="icon-count">
  💧 Pipi : ${d.pipi}
- </div>
+ </span>
 
  <button onclick="add(${i},'pipi')">
  + 💧
  </button>
 
-
- <div class="count">
- 💩 Caca : ${d.caca}
  </div>
+
+
+ <div class="action">
+
+ <span class="icon-count">
+ 💩 Caca : ${d.caca}
+ </span>
 
  <button onclick="add(${i},'caca')">
  + 💩
  </button>
+
+ </div>
 
 
  </div>
@@ -310,50 +360,48 @@ function render(){
  let stars=totalStars();
 
 
- document.getElementById("totalStars").innerHTML =
+ document.getElementById("stars").textContent =
  stars+" ⭐";
 
 
- let percent=Math.min(stars*5,100);
+ let percent=Math.min(stars*4,100);
 
 
- document.getElementById("progressBar").style.width =
+ document.getElementById("bar").style.width =
  percent+"%";
 
 
  let planet="🌍";
- let text="La fusée se prépare au décollage !";
+ let text="La fusée se prépare !";
 
 
  if(stars>=5){
-   planet="🌙";
-   text="Direction la Lune !";
+  planet="🌙";
+  text="La fusée atteint la Lune !";
  }
 
  if(stars>=15){
-   planet="🔴";
-   text="Mars est en vue !";
+  planet="🔴";
+  text="Direction Mars !";
  }
 
  if(stars>=30){
-   planet="🪐";
-   text="Bravo Aurèle, Saturne approche !";
+  planet="🪐";
+  text="Saturne est en vue !";
  }
 
 
- document.getElementById("planet").innerHTML =
+ document.getElementById("planet").textContent =
  planet;
 
 
- document.getElementById("destination").innerHTML =
+ document.getElementById("destination").textContent =
  text;
-
 
 }
 
 
 render();
-
 
 </script>
 
